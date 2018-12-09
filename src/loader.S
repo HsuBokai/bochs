@@ -1,25 +1,88 @@
 %include "boot.inc"
 
 SECTION loader vstart=LOADER_BASE_ADDR
+	jmp loader_start
 
-	mov byte [gs:0x4],'L'
-	mov byte [gs:0x5],0xA4
+	; gdt data structure
+	GDT_BASE:	dd	0x00000000
+			dd	0x00000000
+	CODE_DESC:	dd	0x0000FFFF
+			dd	(0x00 << 24) + \
+				DESC_G_4K + \
+				DESC_D_32 + \
+				DESC_L + \
+				DESC_AVL + \
+				(0xF << 16) + \
+				DESC_P + \
+				DESC_DPL_0 + \
+				DESC_S_SYS + \
+				DESC_TYPE_CODE + \
+				0x00
+	DATA_STACK_DESC:	dd	0x0000FFFF
+				dd	(0x00 << 24) + \
+					DESC_G_4K + \
+					DESC_D_32 + \
+					DESC_L + \
+					DESC_AVL + \
+					(0xF << 16) + \
+					DESC_P + \
+					DESC_DPL_0 + \
+					DESC_S_SYS + \
+					DESC_TYPE_DATA + \
+					0x00
+	VIDEO_DESC:	dd	0x80000007 ; limit=(0xbffff-0xb8000)/4k=0x7
+			dd	(0x00 << 24) + \
+				DESC_G_4K + \
+				DESC_D_32 + \
+				DESC_L + \
+				DESC_AVL + \
+				(0x0 << 16) + \
+				DESC_P + \
+				DESC_DPL_0 + \
+				DESC_S_SYS + \
+				DESC_TYPE_DATA + \
+				0x00
 
-	mov byte [gs:0x6],'O'
-	mov byte [gs:0x7],0xA4
+	GDT_SIZE	equ	$-GDT_BASE
+	GDT_LIMIT	equ	GDT_SIZE-1
 
-	mov byte [gs:0x8],'A'
-	mov byte [gs:0x9],0xA4
+	times 60 dq 0 ; reserve 60 gdt
 
-	mov byte [gs:0xa],'D'
-	mov byte [gs:0xb],0xA4
+	gdt_ptr:	dw GDT_LIMIT
+			dd GDT_BASE
 
-	mov byte [gs:0xc],'E'
-	mov byte [gs:0xd],0xA4
+	loadermsg db '2 loader in real.'
 
-	mov byte [gs:0xe],'R'
-	mov byte [gs:0xf],0xA4
-
+loader_start:
+	mov sp,LOADER_BASE_ADDR
+	mov bp,loadermsg
+	mov cx,17
+	mov ax,0x1301
+	mov bx,0x001f
+	mov dx,0x1800
+	int 0x10
 	jmp $
 
+	in al,0x92
+	or al,0000_0010_b
+	out 0x92,al
 
+	lgdt [gdt_ptr]
+
+	mov eax,cr0
+	or eax,0x00000001
+	mov cr0,eax
+
+	jmp dword SELECTOR_CODE:p_mode_start
+
+p_mode_start:
+	mov ax,SELECTOR_DATA
+	mov ds,ax
+	mov es,ax
+	mov ss,ax
+	mov esp,LOADER_STACK_TOP
+	mov gs,ax
+
+	mov byte [gs:160],'P'
+
+	jmp $

@@ -15,7 +15,7 @@ SECTION loader vstart=LOADER_BASE_ADDR
 				(0xF << 16) + \
 				DESC_P + \
 				DESC_DPL_0 + \
-				DESC_S_SYS + \
+				DESC_S_NONSYS + \
 				DESC_TYPE_CODE + \
 				0x00
 	DATA_STACK_DESC:	dd	0x0000FFFF
@@ -27,7 +27,7 @@ SECTION loader vstart=LOADER_BASE_ADDR
 					(0xF << 16) + \
 					DESC_P + \
 					DESC_DPL_0 + \
-					DESC_S_SYS + \
+					DESC_S_NONSYS + \
 					DESC_TYPE_DATA + \
 					0x00
 	VIDEO_DESC:	dd	0x80000007 ; limit=(0xbffff-0xb8000)/4k=0x7
@@ -39,9 +39,9 @@ SECTION loader vstart=LOADER_BASE_ADDR
 				(0x0 << 16) + \
 				DESC_P + \
 				DESC_DPL_0 + \
-				DESC_S_SYS + \
+				DESC_S_NONSYS + \
 				DESC_TYPE_DATA + \
-				0x00
+				0x0b
 
 	GDT_SIZE	equ	$-GDT_BASE
 	GDT_LIMIT	equ	GDT_SIZE-1
@@ -61,7 +61,6 @@ loader_start:
 	mov bx,0x001f
 	mov dx,0x1800
 	int 0x10
-	jmp $
 
 	in al,0x92
 	or al,0000_0010_b
@@ -75,12 +74,14 @@ loader_start:
 
 	jmp dword SELECTOR_CODE:p_mode_start
 
+[bits 32]
 p_mode_start:
 	mov ax,SELECTOR_DATA
 	mov ds,ax
 	mov es,ax
 	mov ss,ax
 	mov esp,LOADER_STACK_TOP
+	mov ax,SELECTOR_VIDEO
 	mov gs,ax
 
 	mov byte [gs:160],'P'

@@ -14,8 +14,8 @@ DESC_DPL_0	equ (00b << 13)
 DESC_DPL_1	equ (01b << 13)
 DESC_DPL_2	equ (10b << 13)
 DESC_DPL_3	equ (11b << 13)
-DESC_S_SYS	equ (1b << 12)
-DESC_S_NONSYS	equ (0b << 12)
+DESC_S_SYS	equ (0b << 12)
+DESC_S_NONSYS	equ (1b << 12)
 
 ; x=1, c=0, r=0, a=0
 DESC_TYPE_CODE	equ (1000b << 8)

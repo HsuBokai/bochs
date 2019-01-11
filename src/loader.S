@@ -106,6 +106,42 @@ p_mode_start:
 	mov byte [gs:176],'o'
 	mov byte [gs:178],'n'
 
+
+	;---------- setup pde and pte ----------
+	call setup_page
+
+	;---------- change VIDEO_DESC base address to virtual address ----------
+	sgdt [gdt_ptr]
+	mov ebx,[gdt_ptr+2]
+	or dword [ebx+0x18+4],0xc0000000
+
+	;---------- change GDT base address to virtual address ----------
+	add dword [gdt_ptr+2],0xc0000000
+
+	;---------- change stack pointer to virtual address ----------
+	add esp,0xc0000000
+
+	;---------- init Page Directory Base Register ----------
+	mov eax,PAGE_DIR_TABLE_POS
+	mov cr3,eax
+
+	;---------- enable PG ----------
+	mov eax,cr0
+	or eax,0x80000000
+	mov cr0,eax
+
+	;---------- change GDT base address to virtual address ----------
+	lgdt [gdt_ptr]
+
+	;---------- print msg in virtual address enable ----------
+	mov byte [gs:320],'V'
+	mov byte [gs:322],'i'
+	mov byte [gs:324],'r'
+	mov byte [gs:326],'t'
+	mov byte [gs:328],'u'
+	mov byte [gs:330],'a'
+	mov byte [gs:332],'l'
+
 	jmp $
 
 setup_page:

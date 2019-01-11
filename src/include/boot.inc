@@ -4,6 +4,8 @@ LOADER_START_SECTOR	equ 0x2
 LOADER_SECTOR_LEN	equ 4
 LOADER_STACK_TOP	equ LOADER_BASE_ADDR
 
+PAGE_DIR_TABLE_POS	equ 0x100000
+
 ;---------- gdt attributes ----------
 DESC_G_4K	equ (1b << 23)
 DESC_D_32	equ (1b << 22)
@@ -35,3 +37,10 @@ TI_LDT	equ (1b << 2)
 SELECTOR_CODE	equ (0x0001 << 3) + TI_GDT + RPL0
 SELECTOR_DATA	equ (0x0002 << 3) + TI_GDT + RPL0
 SELECTOR_VIDEO	equ (0x0003 << 3) + TI_GDT + RPL0
+
+;---------- page attributes ------
+PG_P		equ 1b
+PG_RW_R		equ 00b
+PG_RW_W		equ 10b
+PG_US_S		equ 000b
+PG_US_U		equ 100b

@@ -53,6 +53,8 @@ SECTION loader vstart=LOADER_BASE_ADDR
 
 	loadermsg db '2 loader in real.'
 
+%include "rd_disk_m_16.S"
+
 loader_start:
 	;---------- init stack pointer ----------
 	mov sp,LOADER_BASE_ADDR

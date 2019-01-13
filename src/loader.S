@@ -67,6 +67,12 @@ loader_start:
 	mov dx,0x1800
 	int 0x10
 
+	;---------- load kernel image ----------
+	mov eax,KERNEL_START_SECTOR
+	mov bx,KERNEL_BIN_BASE_ADDR
+	mov cx,KERNEL_SECTOR_LEN
+	call rd_disk_m_16
+
 	;---------- enable A20 ----------
 	in al,0x92
 	or al,0000_0010_b

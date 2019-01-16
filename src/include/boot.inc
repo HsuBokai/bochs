@@ -9,6 +9,9 @@ PAGE_DIR_TABLE_POS	equ 0x100000
 KERNEL_BIN_BASE_ADDR	equ 0x1000
 KERNEL_START_SECTOR	equ 0x9
 KERNEL_SECTOR_LEN	equ 100
+KERNEL_ENTRY_POINT	equ 0xc0001500
+
+PT_NULL			equ 0
 
 ;---------- gdt attributes ----------
 DESC_G_4K	equ (1b << 23)

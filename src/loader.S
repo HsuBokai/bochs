@@ -150,7 +150,10 @@ p_mode_start:
 	mov byte [gs:330],'a'
 	mov byte [gs:332],'l'
 
-	jmp $
+	;---------- enter_kernel ----------
+	call kernel_init
+	mov esp,0xc009f000
+	jmp KERNEL_ENTRY_POINT
 
 %include "setup_page.S"
-%include "mem_cpy.S"
+%include "kernel_init.S"

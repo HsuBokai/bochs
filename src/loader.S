@@ -153,3 +153,4 @@ p_mode_start:
 	jmp $
 
 %include "setup_page.S"
+%include "mem_cpy.S"

@@ -6,9 +6,11 @@ rm hd60M.img
 
 nasm -I ./src/include/ -o /tmp/mbr.bin ./src/mbr.S
 dd if=/tmp/mbr.bin of=hd60M.img  bs=512 conv=notrunc
+[ $? -ne 0 ] && echo "nasm mbr.S fail!" && exit 1
 
 nasm -I ./src/include/ -o /tmp/loader.bin ./src/loader.S
 dd if=/tmp/loader.bin of=hd60M.img  bs=512 seek=2 conv=notrunc
+[ $? -ne 0 ] && echo "nasm loader.S fail!" && exit 1
 
 gcc -m32 -c -o /tmp/main.o ./src/kernel/main.c
 ld -m elf_i386 /tmp/main.o -Ttext 0xc0001500 -e main -o /tmp/kernel.bin
@@ -26,5 +28,6 @@ if [ $kernel_size -gt 51200 ]; then
 fi
 
 dd if=/tmp/kernel.bin of=hd60M.img bs=512 seek=9 conv=notrunc
+[ $? -ne 0 ] && echo "compile kernel.bin fail!" && exit 1
 
 ./bin/bochs -f bochsrc.disk

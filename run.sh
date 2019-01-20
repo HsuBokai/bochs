@@ -1,7 +1,7 @@
 #!/bin/bash
 set -x
 
-rm hd60M.img
+rm hd60M.img /tmp/*.bin /tmp/*.o
 ./bin/bximage -hd -mode="flat" -size=60 -q hd60M.img
 
 nasm -I ./src/include/ -o /tmp/mbr.bin ./src/mbr.S

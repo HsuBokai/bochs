@@ -121,13 +121,13 @@ p_mode_start:
 	;---------- change VIDEO_DESC base address to virtual address ----------
 	sgdt [gdt_ptr]
 	mov ebx,[gdt_ptr+2]
-	or dword [ebx+0x18+4],0xc0000000
+	or dword [ebx+0x18+4],KERNEL_VIR_ADDR_MAP
 
 	;---------- change GDT base address to virtual address ----------
-	add dword [gdt_ptr+2],0xc0000000
+	add dword [gdt_ptr+2],KERNEL_VIR_ADDR_MAP
 
 	;---------- change stack pointer to virtual address ----------
-	add esp,0xc0000000
+	add esp,KERNEL_VIR_ADDR_MAP
 
 	;---------- init Page Directory Base Register ----------
 	mov eax,PAGE_DIR_TABLE_POS

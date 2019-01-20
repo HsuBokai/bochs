@@ -153,7 +153,9 @@ p_mode_start:
 	;---------- enter_kernel ----------
 	call kernel_init
 	mov esp,KERNEL_STACK_TOP
-	jmp KERNEL_ENTRY_POINT
+	mov eax,[KERNEL_BIN_BASE_ADDR+24]
+	push eax
+	ret ;---------- jmp KERNEL_ENTRY_POINT ----------
 
 %include "setup_page.S"
 %include "kernel_init.S"

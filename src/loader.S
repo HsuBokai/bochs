@@ -152,7 +152,7 @@ p_mode_start:
 
 	;---------- enter_kernel ----------
 	call kernel_init
-	mov esp,0xc009f000
+	mov esp,KERNEL_STACK_TOP
 	jmp KERNEL_ENTRY_POINT
 
 %include "setup_page.S"

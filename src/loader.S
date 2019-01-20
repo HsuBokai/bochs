@@ -30,18 +30,19 @@ SECTION loader vstart=LOADER_BASE_ADDR
 					DESC_S_NONSYS + \
 					DESC_TYPE_DATA + \
 					0x00
-	VIDEO_DESC:	dd	0x80000007 ; limit=(0xbffff-0xb8000)/4k=0x7
+	VIDEO_DESC:	dw	0x0007 ; limit=(0xbffff-0xb8000)/4k=0x7
+			dw	VIDEO_DESC_BASE_LOW
 			dd	(0x00 << 24) + \
 				DESC_G_4K + \
 				DESC_D_32 + \
 				DESC_L + \
 				DESC_AVL + \
-				(0x0 << 16) + \
+				(VIDEO_DESC_BASE_HIGH_H << 16) + \
 				DESC_P + \
 				DESC_DPL_0 + \
 				DESC_S_NONSYS + \
 				DESC_TYPE_DATA + \
-				0x0b
+				VIDEO_DESC_BASE_HIGH_L
 
 	GDT_SIZE	equ	$-GDT_BASE
 	GDT_LIMIT	equ	GDT_SIZE-1

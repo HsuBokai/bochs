@@ -46,6 +46,10 @@ SELECTOR_CODE	equ (0x0001 << 3) + TI_GDT + RPL0
 SELECTOR_DATA	equ (0x0002 << 3) + TI_GDT + RPL0
 SELECTOR_VIDEO	equ (0x0003 << 3) + TI_GDT + RPL0
 
+VIDEO_DESC_BASE_HIGH_H	equ 0x00
+VIDEO_DESC_BASE_HIGH_L	equ 0x0b
+VIDEO_DESC_BASE_LOW	equ 0x8000
+
 ;---------- page attributes ------
 PG_P		equ 1b
 PG_RW_R		equ 00b

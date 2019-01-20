@@ -31,3 +31,12 @@ dd if=/tmp/kernel.bin of=hd60M.img bs=512 seek=9 conv=notrunc
 [ $? -ne 0 ] && echo "compile kernel.bin fail!" && exit 1
 
 ./bin/bochs -f bochsrc.disk
+
+# ---------- for bochs debug ----------
+# pb 0x900 -> set breakpoint in physical address
+# xp 0x1500 -> print memory content by physical address
+# info gdt -> show GDT
+# info tab -> show page mapping
+# print-stack
+# reg -> show general registers
+# sreg -> show segment registers

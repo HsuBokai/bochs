@@ -13,8 +13,8 @@ int main(void){
 		movl %eax, out_sum;	\
 		popa			\
 	");
-	put_str("hello world!");
-	put_str("This is kernel!");
+	put_str("hello world!\n");
+	put_str("This is kernel!\n");
 	while(1);
 	return 0;
 }

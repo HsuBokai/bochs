@@ -13,7 +13,7 @@ dd if=/tmp/loader.bin of=hd60M.img  bs=512 seek=2 conv=notrunc
 [ $? -ne 0 ] && echo "nasm loader.S fail!" && exit 1
 
 gcc -m32 -c -o /tmp/main.o ./src/kernel/main.c
-ld -m elf_i386 /tmp/main.o -Ttext 0xc0001500 -e main -o /tmp/kernel.bin
+ld -m elf_i386 /tmp/main.o -Ttext 0xc0010000 -e main -o /tmp/kernel.bin
 
 elf_header_size=`readelf -e /tmp/kernel.bin | grep "Size of this header" | cut -d ":" -f2 | cut -d "(" -f1`
 xxd -u -a -g 1 -s 0 -l $elf_header_size /tmp/kernel.bin

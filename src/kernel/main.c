@@ -15,6 +15,10 @@ int main(void){
 	");
 	put_str("hello world!\n");
 	put_str("This is kernel!\n");
+
+	idt_init();
+	asm volatile("sti");
+
 	while(1);
 	return 0;
 }

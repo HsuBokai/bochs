@@ -19,8 +19,8 @@ void put_str(uint8_t* str)
 				pusha;				\
 				movl video_ptr, %eax;		\
 				shll $1, %eax;			\
-				movw video_char, %ebx;		\
-				movw %ebx, %gs:(%eax);		\
+				movw video_char, %bx;		\
+				movw %bx, %gs:(%eax);		\
 				popa;				\
 			");
 			video_ptr++;

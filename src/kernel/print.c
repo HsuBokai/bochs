@@ -26,5 +26,12 @@ void put_str(uint8_t* str)
 			video_ptr++;
 		}
 	}
+	asm volatile(" \
+		pushl %eax;			\
+		movl video_ptr, %eax;		\
+		shll $1, %eax;			\
+		movw $36827, %gs:(%eax);	\
+		popl %eax;			\
+	");
 }
 

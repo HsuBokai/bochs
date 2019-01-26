@@ -15,7 +15,7 @@ dd if=/tmp/loader.bin of=hd60M.img  bs=512 seek=2 conv=notrunc
 gcc -m32 -c -o /tmp/interrupt.o ./src/kernel/interrupt.c -I ./src/kernel/include
 gcc -m32 -c -o /tmp/print.o ./src/kernel/print.c -I ./src/kernel/include
 gcc -m32 -c -o /tmp/main.o ./src/kernel/main.c -I ./src/kernel/include
-ld -m elf_i386 /tmp/interrupt.o /tmp/main.o /tmp/print.o -Ttext 0xc0010000 -e main -o /tmp/kernel.bin
+ld -m elf_i386 /tmp/main.o /tmp/print.o /tmp/interrupt.o -Ttext 0xc0010000 -e main -o /tmp/kernel.bin
 
 elf_header_size=`readelf -e /tmp/kernel.bin | grep "Size of this header" | cut -d ":" -f2 | cut -d "(" -f1`
 xxd -u -a -g 1 -s 0 -l $elf_header_size /tmp/kernel.bin

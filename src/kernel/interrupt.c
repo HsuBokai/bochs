@@ -15,19 +15,11 @@ struct gate_desc {
 static void make_idt_desc(struct gate_desc* p_gdesc, uint8_t attr, intr_handler function);
 static struct gate_desc idt[IDT_DESC_CNT];
 
-//extern intr_handler intr_entry_table[IDT_DESC_CNT];
-static void intr_default_handler()
+extern intr_handler intr_entry_table[IDT_DESC_CNT];
+
+void general_intr_handler(uint8_t vec_nr)
 {
-	asm volatile(" \
-		pusha;			\
-		pusha;			\
-		pusha;			\
-		pusha;			\
-		popa;			\
-		popa;			\
-		popa;			\
-		popa;			\
-	");
+	put_str("interrupt!!");
 }
 
 static void make_idt_desc(struct gate_desc* p_gdesc, uint8_t attr, intr_handler function) {
@@ -41,8 +33,7 @@ static void make_idt_desc(struct gate_desc* p_gdesc, uint8_t attr, intr_handler 
 static void idt_desc_init(void) {
 	int i;
 	for (i=0; i<IDT_DESC_CNT; i++) {
-		//make_idt_desc(&idt[i], IDT_DESC_ATTR_DPL0, intr_entry_table[i]);
-		make_idt_desc(&idt[i], IDT_DESC_ATTR_DPL0, intr_default_handler);
+		make_idt_desc(&idt[i], IDT_DESC_ATTR_DPL0, intr_entry_table[i]);
 	}
 	put_str("idt_desc_init done\n");
 }

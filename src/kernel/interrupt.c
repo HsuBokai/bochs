@@ -25,7 +25,9 @@ extern intr_handler intr_entry_table[IDT_DESC_CNT];
 
 void general_intr_handler(uint8_t vec_nr)
 {
-	put_str("interrupt!!");
+	put_str("interrupt!! vec_nr:");
+	put_int(vec_nr);
+	put_str("!\n");
 }
 
 static void make_idt_desc(struct gate_desc* p_gdesc, uint8_t attr, intr_handler function) {

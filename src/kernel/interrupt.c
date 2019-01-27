@@ -1,8 +1,14 @@
 #include "interrupt.h"
 #include "stdint.h"
 #include "global.h"
+#include "io.h"
 
 #define IDT_DESC_CNT 0x21
+
+#define PIC_M_CTRL 0x20
+#define PIC_M_DATA 0x21
+#define PIC_S_CTRL 0xa0
+#define PIC_S_DATA 0xa1
 
 struct gate_desc {
 	uint16_t func_offset_low_word;
@@ -38,10 +44,30 @@ static void idt_desc_init(void) {
 	put_str("idt_desc_init done\n");
 }
 
+static void pic_init()
+{
+	outb(PIC_M_CTRL, 0x11);
+	outb(PIC_M_DATA, 0x20);
+
+	outb(PIC_M_DATA, 0x04);
+	outb(PIC_M_DATA, 0x01);
+
+	outb(PIC_S_CTRL, 0x11);
+	outb(PIC_S_DATA, 0x28);
+
+	outb(PIC_S_DATA, 0x02);
+	outb(PIC_S_DATA, 0x01);
+
+	outb(PIC_M_DATA, 0xfe);
+	outb(PIC_S_DATA, 0xff);
+
+	put_str("pic_init done\n");
+}
+
 void idt_init() {
 	put_str("idt_init start\n");
 	idt_desc_init();
-	//pic_init();
+	pic_init();
 
 	uint64_t idt_operand = ((sizeof(idt) - 1) | ((uint64_t)(uint32_t)idt) << 16);
 	asm volatile("lidt %0" : :  "m" (idt_operand));

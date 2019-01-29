@@ -1,10 +1,24 @@
 #include "stdint.h"
 
+#define SCREEN_LENGTH 80
+#define SCREEN_HEIGHT 25
+
 uint32_t video_ptr = 0;
 uint16_t video_char = 0x0700;
 
+static void check_roll_screen()
+{
+	if (video_ptr < SCREEN_LENGTH * SCREEN_HEIGHT)
+		return;
+
+	mem_cpy(0xc00b8000, 0xc00b80a0, SCREEN_LENGTH * SCREEN_HEIGHT * 2 / 4);
+	video_ptr = SCREEN_LENGTH * (SCREEN_HEIGHT-1);
+}
+
 static void print_char(uint8_t c)
 {
+	check_roll_screen();
+
 	video_char = (uint16_t)(0x0700 | c);
 	asm volatile(" \
 		pusha;				\
@@ -19,6 +33,8 @@ static void print_char(uint8_t c)
 
 static void print_cursor()
 {
+	check_roll_screen();
+
 	asm volatile(" \
 		pushl %eax;			\
 		movl video_ptr, %eax;		\
@@ -36,8 +52,8 @@ void put_str(uint8_t* str)
 
 	for(str; '\0' != *str; str++) {
 		if ('\n' == *str) {
-			video_ptr -= (video_ptr % 80);
-			video_ptr += 80;
+			video_ptr -= (video_ptr % SCREEN_LENGTH);
+			video_ptr += SCREEN_LENGTH;
 		} else {
 			print_char(*str);
 		}

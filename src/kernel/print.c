@@ -52,6 +52,7 @@ void put_str(uint8_t* str)
 
 	for(str; '\0' != *str; str++) {
 		if ('\n' == *str) {
+			print_char(' ');
 			video_ptr -= (video_ptr % SCREEN_LENGTH);
 			video_ptr += SCREEN_LENGTH;
 		} else {

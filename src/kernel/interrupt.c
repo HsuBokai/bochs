@@ -75,3 +75,9 @@ void idt_init() {
 	asm volatile("lidt %0" : :  "m" (idt_operand));
 	put_str("idt_init done\n");
 }
+
+uint32_t is_interrupt_enabled() {
+	uint32_t ret = 0;
+	GET_EFLAGS(ret);
+	return (EFLAGS_IF & ret);
+}

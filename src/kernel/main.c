@@ -1,4 +1,5 @@
 #include "stdint.h"
+#include "debug.h"
 
 void put_str(uint8_t* str);
 
@@ -18,6 +19,8 @@ int main(void){
 
 	idt_init();
 	asm volatile("sti");
+
+	//ASSERT(1==2);
 
 	while(1);
 	return 0;

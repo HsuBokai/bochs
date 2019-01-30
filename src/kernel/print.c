@@ -1,25 +1,26 @@
-#include "stdint.h"
+#include "print.h"
+#include "mem.h"
 
 #define SCREEN_LENGTH 80
 #define SCREEN_HEIGHT 25
 
 uint32_t video_ptr = 0;
-uint16_t video_char = 0x0700;
+int16_t video_char = 0x0700;
 
-static void check_roll_screen()
+static void check_roll_screen(void)
 {
 	if (video_ptr < SCREEN_LENGTH * SCREEN_HEIGHT)
 		return;
 
-	mem_cpy(0xc00b8000, 0xc00b80a0, SCREEN_LENGTH * SCREEN_HEIGHT * 2 / 4);
+	mem_cpy((uint32_t*)0xc00b8000, (uint32_t*)0xc00b80a0, SCREEN_LENGTH * SCREEN_HEIGHT * 2 / 4);
 	video_ptr = SCREEN_LENGTH * (SCREEN_HEIGHT-1);
 }
 
-static void print_char(uint8_t c)
+static void print_char(const int8_t c)
 {
 	check_roll_screen();
 
-	video_char = (uint16_t)(0x0700 | c);
+	video_char = (int16_t)(0x0700 | c);
 	asm volatile(" \
 		pusha;				\
 		movl video_ptr, %eax;		\
@@ -31,7 +32,7 @@ static void print_char(uint8_t c)
 	video_ptr++;
 }
 
-static void print_cursor()
+static void print_cursor(void)
 {
 	check_roll_screen();
 
@@ -44,13 +45,13 @@ static void print_cursor()
 	");
 }
 
-void put_str(uint8_t* str)
+void put_str(const int8_t* str)
 {
 
 	if (0 == str)
 		return;
 
-	for(str; '\0' != *str; str++) {
+	for(; '\0' != *str; str++) {
 		if ('\n' == *str) {
 			print_char(' ');
 			video_ptr -= (video_ptr % SCREEN_LENGTH);
@@ -62,13 +63,13 @@ void put_str(uint8_t* str)
 	print_cursor();
 }
 
-void put_int(uint8_t num)
+void put_int(const uint8_t num)
 {
-	uint8_t num_h = (num >> 4) & 0x0f;
-	uint8_t num_l = num & 0x0f;
+	int8_t num_h = (num >> 4) & 0x0f;
+	int8_t num_l = num & 0x0f;
 	print_char('0');
 	print_char('x');
-	print_char((num_h >= 10) ? (uint8_t)'a' + (num_h - 10) : (uint8_t)'0' + num_h);
-	print_char((num_l >= 10) ? (uint8_t)'a' + (num_l - 10) : (uint8_t)'0' + num_l);
+	print_char((num_h >= 10) ? 'a' + (num_h - 10) : '0' + num_h);
+	print_char((num_l >= 10) ? 'a' + (num_l - 10) : '0' + num_l);
 	print_cursor();
 }

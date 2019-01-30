@@ -1,7 +1,6 @@
-#include "stdint.h"
 #include "debug.h"
-
-void put_str(uint8_t* str);
+#include "interrupt.h"
+#include "print.h"
 
 int in_a=1, in_b=2, out_sum;
 

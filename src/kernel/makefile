@@ -3,7 +3,7 @@ BUILD_DIR=/tmp
 ENTRY_POINT=0xc0010000
 
 CC=$(TOOLCHAIN)gcc
-CFLAGS= -m32 -Wall -c -W -I./include -fno-builtin -Wstrict-prototypes -Wmissing-prototypes
+CFLAGS= -m32 -Wall -c -W -I./include -fno-builtin -Wstrict-prototypes -Wmissing-prototypes -Werror
 
 AS=$(TOOLCHAIN)nasm
 ASFLAGS= -f elf

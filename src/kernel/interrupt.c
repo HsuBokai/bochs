@@ -1,7 +1,7 @@
 #include "interrupt.h"
-#include "stdint.h"
 #include "global.h"
 #include "io.h"
+#include "print.h"
 
 #define IDT_DESC_CNT 0x21
 
@@ -46,7 +46,7 @@ static void idt_desc_init(void) {
 	put_str("idt_desc_init done\n");
 }
 
-static void pic_init()
+static void pic_init(void)
 {
 	outb(PIC_M_CTRL, 0x11);
 	outb(PIC_M_DATA, 0x20);
@@ -66,7 +66,7 @@ static void pic_init()
 	put_str("pic_init done\n");
 }
 
-void idt_init() {
+void idt_init(void) {
 	put_str("idt_init start\n");
 	idt_desc_init();
 	pic_init();
@@ -76,7 +76,7 @@ void idt_init() {
 	put_str("idt_init done\n");
 }
 
-uint32_t is_interrupt_enabled() {
+uint32_t is_interrupt_enabled(void) {
 	uint32_t ret = 0;
 	GET_EFLAGS(ret);
 	return (EFLAGS_IF & ret);

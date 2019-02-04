@@ -16,6 +16,7 @@ OBJS=$(BUILD_DIR)/main.o \
 	$(BUILD_DIR)/interrupt.o \
 	$(BUILD_DIR)/intr.o \
 	$(BUILD_DIR)/mem.o \
+	$(BUILD_DIR)/bitmap.o \
 	$(BUILD_DIR)/debug.o
 HEADER_FILES= $(wildcard ./include/*.h)
 

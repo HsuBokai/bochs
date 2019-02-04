@@ -2,7 +2,7 @@
 #define __BITMAP_H
 #include "stdint.h"
 
-#define ROUND_UP(a,b) ((a)/(b) + ((a)%(b))?1:0)
+#define ROUND_UP(a,b) ((a)/(b) + (((a)%(b))?1:0))
 
 typedef struct bitmap {
 	uint32_t bits_len;

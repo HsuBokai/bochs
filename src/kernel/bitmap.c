@@ -45,7 +45,7 @@ int bitmap_scan(bitmap_t *self, uint32_t count, uint32_t *bit_offset)
 		}
 		if (bitmap_get(self, bit_idx)) {
 			len = 0;
-			*bit_offset = bit_idx;
+			*bit_offset = bit_idx + 1;
 		} else {
 			len++;
 		}

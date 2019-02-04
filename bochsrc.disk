@@ -100,7 +100,7 @@
 # now supported, but we still recommend to use the BIOS distributed with
 # Bochs. The start address optional, since it can be calculated from image size.
 #=======================================================================
-romimage: file=/home/epsilon/bochs/share/bochs/BIOS-bochs-latest 
+romimage: file=./share/bochs/BIOS-bochs-latest
 #romimage: file=bios/seabios-1.6.3.bin
 #romimage: file=mybios.bin, address=0xfff80000 # 512k at memory top
 
@@ -379,7 +379,7 @@ memory: guest=512, host=256
 # You now need to load a VGA ROM BIOS into C0000.
 #=======================================================================
 #vgaromimage: file=bios/VGABIOS-elpin-2.40
-vgaromimage: file=/home/epsilon/bochs/share/bochs/VGABIOS-lgpl-latest
+vgaromimage: file=./share/bochs/VGABIOS-lgpl-latest
 #vgaromimage: file=bios/VGABIOS-lgpl-latest-cirrus
 
 #=======================================================================
@@ -818,7 +818,7 @@ parport1: enabled=1, file="parport.out"
 #   keyboard: user_shortcut=ctrl-alt-del
 #=======================================================================
 keyboard: type=mf, serial_delay=250
-keyboard: keymap=/home/epsilon/bochs/share/bochs/keymaps/x11-pc-us.map
+keyboard: keymap=./share/bochs/keymaps/x11-pc-us.map
 
 #=======================================================================
 # MOUSE:

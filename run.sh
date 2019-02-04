@@ -2,7 +2,8 @@
 set -x
 
 rm hd60M.img /tmp/mbr.bin /tmp/loader.bin
-./bin/bximage -hd -mode="flat" -size=60 -q hd60M.img
+#./bin/bximage -hd -mode="flat" -size=60 -q hd60M.img
+dd if=/dev/zero of=./hd60M.img bs=1M count=60
 
 nasm -I ./src/include/ -o /tmp/mbr.bin ./src/mbr.S
 dd if=/tmp/mbr.bin of=hd60M.img  bs=512 conv=notrunc

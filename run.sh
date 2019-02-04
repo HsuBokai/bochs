@@ -1,7 +1,7 @@
 #!/bin/bash
 set -x
 
-rm hd60M.img /tmp/mbr.bin /tmp/loader.bin
+rm hd60M.img /tmp/mbr.bin /tmp/loader.bin /tmp/kernel.bin
 #./bin/bximage -hd -mode="flat" -size=60 -q hd60M.img
 dd if=/dev/zero of=./hd60M.img bs=1M count=60
 

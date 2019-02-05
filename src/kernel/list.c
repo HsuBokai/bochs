@@ -39,6 +39,8 @@ void list_init(list_t *self)
 
 void list_insert_head(list_t *self, list_elem_t *elem)
 {
+	ASSERT( ! list_find_elem(self, elem));
+
 	if (NULL != self->head)
 		list_elem_insert_before(self->head, elem);
 
@@ -50,6 +52,8 @@ void list_insert_head(list_t *self, list_elem_t *elem)
 
 void list_insert_tail(list_t *self, list_elem_t *elem)
 {
+	ASSERT( ! list_find_elem(self, elem));
+
 	if (NULL != self->tail)
 		list_elem_insert_after(self->tail, elem);
 

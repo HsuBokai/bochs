@@ -84,6 +84,5 @@ void thread_start(thread_t *self);
 void thread_ready(thread_t *self);
 
 thread_t* running_thread(void);
-void make_main_thread(void);
 
 #endif /* __THREAD_H */

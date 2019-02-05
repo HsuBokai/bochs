@@ -28,6 +28,8 @@ void thread_init(thread_t *self, int8_t *name, uint8_t priority)
 	self->pg_base_ptr = NULL;
 
 	self->stack_magic = 0x12345678;
+
+	list_insert_tail(&thread_all_list, &(self->all_list_tag));
 }
 
 void thread_func_setup(thread_t *self, thread_func *function, void *func_arg)
@@ -56,8 +58,8 @@ void thread_start(thread_t *self)
 
 void thread_ready(thread_t *self)
 {
+	self->status = TASK_READY;
 	list_insert_tail(&thread_ready_list, &(self->general_tag));
-	list_insert_tail(&thread_all_list, &(self->all_list_tag));
 }
 
 thread_t* running_thread(void)
@@ -65,13 +67,4 @@ thread_t* running_thread(void)
 	uint32_t esp;
 	GET_STACK_PTR(esp);
 	return (thread_t*)(esp & 0xfffff000);
-}
-
-void make_main_thread(void)
-{
-	thread_t *thread_main = running_thread();
-	thread_init(thread_main, "thread Main", 1);
-	thread_main->status = TASK_RUNNING;
-
-	list_insert_tail(&thread_all_list, &(thread_main->all_list_tag));
 }

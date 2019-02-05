@@ -12,7 +12,7 @@ static void check_roll_screen(void)
 	if (video_ptr < SCREEN_LENGTH * SCREEN_HEIGHT)
 		return;
 
-	mem_cpy((uint32_t*)0xc00b8000, (uint32_t*)0xc00b80a0, SCREEN_LENGTH * SCREEN_HEIGHT * 2 / 4);
+	mem_cpy((int8_t*)0xc00b8000, (int8_t*)0xc00b80a0, SCREEN_LENGTH * SCREEN_HEIGHT * 2);
 	video_ptr = SCREEN_LENGTH * (SCREEN_HEIGHT-1);
 }
 

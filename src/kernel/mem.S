@@ -3,7 +3,7 @@
 global mem_cpy
 
 SECTION .text
-; extern void mem_cpy(uint32_t* dst, uint32_t* src, uint32_t count);
+; extern void mem_cpy(int8_t *dst, int8_t *src, uint32_t bytes_count);
 mem_cpy:
 	cld ; clean direction: means esi,edi auto add size(byte word double)
 	push ebp

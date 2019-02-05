@@ -2,6 +2,12 @@
 #define __LIB_LIST_H
 #include "stdint.h"
 
+#define offset(struct_type, member) \
+	(uint32_t)(&(((struct_type*)0)->member))
+
+#define elem2struct(struct_type, member, elem_ptr) \
+	(struct_type*)((uint32_t)elem_ptr - offset(struct_type, member))
+
 typedef struct list_elem {
 	struct list_elem* prev;
 	struct list_elem* next;

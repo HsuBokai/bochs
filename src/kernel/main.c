@@ -27,7 +27,7 @@ int main(void){
 	//malloc_page(PF_KERNEL, 40);
 
 	idt_init();
-	asm volatile("sti");
+	INTR_ENABLE;
 
 	//ASSERT(1==2);
 

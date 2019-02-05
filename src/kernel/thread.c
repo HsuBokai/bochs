@@ -48,6 +48,7 @@ void thread_func_setup(thread_t *self, thread_func *function, void *func_arg)
 
 void thread_start(thread_t *self)
 {
+	self->status = TASK_RUNNING;
 	asm volatile ("			\
 		movl %0, %%esp;		\
 		pop %%ebp;		\

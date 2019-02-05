@@ -27,14 +27,23 @@ int main(void){
 	//malloc_page(PF_KERNEL, 40);
 
 	idt_init();
-	INTR_ENABLE;
 
 	//ASSERT(1==2);
 
 	thread_t *thread_a = (thread_t*) malloc_page(PF_KERNEL, 1);
 	thread_init(thread_a, "thread A", 3);
 	thread_func_setup(thread_a, print_thread, "thread A! ");
-	thread_start(thread_a);
+	thread_ready(thread_a);
+
+	thread_t *thread_b = (thread_t*) malloc_page(PF_KERNEL, 1);
+	thread_init(thread_b, "thread BB", 7);
+	thread_func_setup(thread_b, print_thread, "thread BB! ");
+	thread_ready(thread_b);
+
+	thread_t *thread_main = (thread_t*) malloc_page(PF_KERNEL, 1);
+	thread_init(thread_main, "thread Main", 1);
+	thread_func_setup(thread_main, print_thread, "thread Main! ");
+	thread_start(thread_main);
 
 	while(1);
 	return 0;

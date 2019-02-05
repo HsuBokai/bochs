@@ -6,7 +6,7 @@
 
 int in_a=1, in_b=2, out_sum;
 
-static void k_thread_a(void *arg);
+static void print_thread(void *arg);
 
 int main(void){
 	asm(" \
@@ -32,15 +32,15 @@ int main(void){
 	//ASSERT(1==2);
 
 	thread_t *thread_a = (thread_t*) malloc_page(PF_KERNEL, 1);
-	thread_init(thread_a, "k_thread_a", 31);
-	thread_func_setup(thread_a, k_thread_a, "thread A\n");
+	thread_init(thread_a, "thread A", 3);
+	thread_func_setup(thread_a, print_thread, "thread A! ");
 	thread_start(thread_a);
 
 	while(1);
 	return 0;
 }
 
-static void k_thread_a(void *arg)
+static void print_thread(void *arg)
 {
 	int8_t* str = arg;
 	while(1) {

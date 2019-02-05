@@ -3,6 +3,8 @@
 #include "io.h"
 #include "print.h"
 #include "debug.h"
+#include "thread.h"
+#include "schedule.h"
 
 #define IDT_DESC_CNT 0x21
 
@@ -40,6 +42,18 @@ void timer_intr_handler(uint8_t vec_nr)
 	put_str("interrupt:");
 	put_str(intr_name[vec_nr]);
 	put_str("\n");
+
+	thread_t *curr = running_thread();
+
+	ASSERT(0x12345678 == curr->stack_magic);
+
+	curr->elapsed_ticks++;
+
+	if (0 == curr->ticks) {
+		schedule();
+	} else {
+		curr->ticks--;
+	}
 }
 
 static void make_idt_desc(struct gate_desc* p_gdesc, uint8_t attr, intr_handler function) {

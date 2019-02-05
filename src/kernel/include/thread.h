@@ -1,8 +1,12 @@
 #ifndef __THREAD_H
 #define __THREAD_H
 #include "stdint.h"
+#include "list.h"
 
 typedef void thread_func(void*);
+
+#define GET_STACK_PTR(ESP_VAR) \
+	asm volatile("mov %%esp, %0" : "=g" (ESP_VAR))
 
 typedef enum thread_status {
 	TASK_RUNNING,
@@ -64,11 +68,22 @@ typedef struct thread {
 	thread_status_t status;
 	uint8_t priority;
 	int8_t name[19];
+
+	uint8_t ticks;
+	uint32_t elapsed_ticks;
+	list_elem_t general_tag;
+	list_elem_t all_list_tag;
+	uint32_t* pg_base_ptr;
+
 	uint32_t stack_magic;
 } thread_t;
 
 void thread_init(thread_t *self, int8_t *name, uint8_t priority);
 void thread_func_setup(thread_t *self, thread_func *function, void *func_arg);
 void thread_start(thread_t *self);
+void thread_ready(thread_t *self);
+
+thread_t* running_thread(void);
+void make_main_thread(void);
 
 #endif /* __THREAD_H */

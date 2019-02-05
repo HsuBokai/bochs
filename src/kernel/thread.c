@@ -2,6 +2,7 @@
 #include "debug.h"
 #include "mem.h"
 #include "mm.h"
+#include "schedule.h"
 
 static void thread_start_helper(thread_func* function, void* func_arg)
 {
@@ -19,6 +20,12 @@ void thread_init(thread_t *self, int8_t *name, uint8_t priority)
 	self->priority = priority;
 
 	for (; name[i]; ++i) self->name[i] = name[i];
+
+	self->ticks = priority;
+	self->elapsed_ticks = 0;
+	list_elem_init(&(self->general_tag));
+	list_elem_init(&(self->all_list_tag));
+	self->pg_base_ptr = NULL;
 
 	self->stack_magic = 0x12345678;
 }
@@ -45,4 +52,26 @@ void thread_start(thread_t *self)
 		pop %%esi;		\
 		ret;			\
 	": : "g" (self->stack_ptr) : "memory");
+}
+
+void thread_ready(thread_t *self)
+{
+	list_insert_tail(&thread_ready_list, &(self->general_tag));
+	list_insert_tail(&thread_all_list, &(self->all_list_tag));
+}
+
+thread_t* running_thread(void)
+{
+	uint32_t esp;
+	GET_STACK_PTR(esp);
+	return (thread_t*)(esp & 0xfffff000);
+}
+
+void make_main_thread(void)
+{
+	thread_t *thread_main = running_thread();
+	thread_init(thread_main, "thread Main", 1);
+	thread_main->status = TASK_RUNNING;
+
+	list_insert_tail(&thread_all_list, &(thread_main->all_list_tag));
 }

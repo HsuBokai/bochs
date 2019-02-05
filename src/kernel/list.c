@@ -31,6 +31,16 @@ void list_elem_insert_after(list_elem_t *self, list_elem_t *new_elem)
 		new_elem->next->prev = new_elem;
 }
 
+void list_elem_remove(list_elem_t *self)
+{
+	ASSERT(NULL != self);
+
+	if (NULL != self->prev)
+		self->prev->next = self->next;
+	if (NULL != self->next)
+		self->next->prev = self->prev;
+}
+
 void list_init(list_t *self)
 {
 	self->head = NULL;
@@ -78,5 +88,21 @@ int list_find_elem(list_t *self, list_elem_t *elem)
 
 	ret = 0;
 Found:
+	return ret;
+}
+
+list_elem_t* list_pop_head(list_t *self)
+{
+	list_elem_t* ret = self->head;
+	list_elem_remove(self->head);
+	self->head = self->head->next;
+	return ret;
+}
+
+list_elem_t* list_pop_tail(list_t *self)
+{
+	list_elem_t* ret = self->tail;
+	list_elem_remove(self->tail);
+	self->tail = self->tail->prev;
 	return ret;
 }

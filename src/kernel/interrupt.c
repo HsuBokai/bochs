@@ -35,6 +35,13 @@ void general_intr_handler(uint8_t vec_nr)
 	ASSERT(0);
 }
 
+void timer_intr_handler(uint8_t vec_nr)
+{
+	put_str("interrupt:");
+	put_str(intr_name[vec_nr]);
+	put_str("\n");
+}
+
 static void make_idt_desc(struct gate_desc* p_gdesc, uint8_t attr, intr_handler function) {
 	p_gdesc->func_offset_low_word = (uint32_t)function & 0x0000ffff;
 	p_gdesc->selector = SELECTOR_K_CODE;
@@ -82,7 +89,7 @@ static void idt_desc_init(void) {
 	intr_name[0x1e] = "#UK Unknown";
 	intr_name[0x1f] = "#UK Unknown";
 
-	intr_name[0x20] = "#UK Unknown";
+	intr_name[0x20] = "#TI Timer Interrupt";
 
 	put_str("idt_desc_init done\n");
 }

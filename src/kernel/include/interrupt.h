@@ -13,6 +13,7 @@ typedef void* intr_handler;
 	asm volatile("sti");
 
 void general_intr_handler(uint8_t vec_nr);
+void timer_intr_handler(uint8_t vec_nr);
 void idt_init(void);
 uint32_t is_interrupt_enabled(void);
 

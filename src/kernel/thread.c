@@ -3,9 +3,11 @@
 #include "mem.h"
 #include "mm.h"
 #include "schedule.h"
+#include "interrupt.h"
 
 static void thread_start_helper(thread_func* function, void* func_arg)
 {
+	INTR_ENABLE;
 	function(func_arg);
 }
 

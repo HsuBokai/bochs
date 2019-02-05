@@ -101,7 +101,11 @@ void* malloc_page(pool_flags_t pf, uint32_t pg_count)
 	if (0 != bitmap_scan(&(mem_pool->pool_bitmap), pg_count, &bit_offset))
 		goto FAIL;
 
+	put_str("malloc ");
+	put_int((uint8_t)pg_count);
+	put_str(" pages from bit_offset: ");
 	put_int((uint8_t)bit_offset);
+	put_str("!\n");
 
 	phy_mem_start = mem_pool->phy_mem_offset + bit_offset * PG_SIZE;
 	vir_mem_start = kernel_vaddr_ptr;

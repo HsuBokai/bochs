@@ -96,6 +96,8 @@ list_elem_t* list_pop_head(list_t *self)
 	list_elem_t* ret = self->head;
 	list_elem_remove(self->head);
 	self->head = self->head->next;
+	if (NULL == self->head)
+		self->tail = NULL;
 	return ret;
 }
 
@@ -104,5 +106,7 @@ list_elem_t* list_pop_tail(list_t *self)
 	list_elem_t* ret = self->tail;
 	list_elem_remove(self->tail);
 	self->tail = self->tail->prev;
+	if (NULL == self->tail)
+		self->head = NULL;
 	return ret;
 }

@@ -3,6 +3,7 @@
 #include "print.h"
 #include "mm.h"
 #include "thread.h"
+#include "timer.h"
 
 int in_a=1, in_b=2, out_sum;
 
@@ -27,6 +28,8 @@ int main(void){
 	//malloc_page(PF_KERNEL, 40);
 
 	idt_init();
+
+	timer_init();
 
 	//ASSERT(1==2);
 

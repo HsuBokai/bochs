@@ -3,6 +3,7 @@
 #include "thread.h"
 #include "debug.h"
 #include "switch.h"
+#include "interrupt.h"
 
 list_t thread_ready_list;
 list_t thread_all_list;
@@ -11,6 +12,8 @@ void schedule(void)
 {
 	thread_t *curr = NULL, *next = NULL;
 	list_elem_t *next_tag = NULL;
+
+	ASSERT(!is_interrupt_enabled());
 
 	curr = running_thread();
 

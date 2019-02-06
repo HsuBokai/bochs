@@ -39,9 +39,15 @@ void general_intr_handler(uint8_t vec_nr)
 
 void timer_intr_handler(uint8_t vec_nr)
 {
+#if 0
 	put_str("interrupt:");
 	put_str(intr_name[vec_nr]);
 	put_str("\n");
+#else
+	// prevent unused warning
+	vec_nr++;
+	vec_nr--;
+#endif
 
 	thread_t *curr = running_thread();
 

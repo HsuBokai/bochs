@@ -71,3 +71,30 @@ thread_t* running_thread(void)
 	GET_STACK_PTR(esp);
 	return (thread_t*)(esp & 0xfffff000);
 }
+
+void thread_block(void)
+{
+	thread_t *curr = NULL;
+	int org_interrupt_enabled = is_interrupt_enabled();
+
+	curr = running_thread();
+
+	ASSERT(TASK_RUNNING == curr->status);
+
+	if (org_interrupt_enabled) INTR_DISABLE;
+	curr->status = TASK_BLOCKED;
+	schedule();
+	if (org_interrupt_enabled) INTR_ENABLE;
+}
+
+void thread_unblock(thread_t *th)
+{
+	int org_interrupt_enabled = is_interrupt_enabled();
+
+	ASSERT(TASK_BLOCKED == th->status)
+
+	if (org_interrupt_enabled) INTR_DISABLE;
+	list_insert_tail(&thread_ready_list, &(th->general_tag));
+	th->status = TASK_READY;
+	if (org_interrupt_enabled) INTR_ENABLE;
+}

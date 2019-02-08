@@ -1,6 +1,6 @@
 #include "debug.h"
 #include "interrupt.h"
-#include "print.h"
+#include "console.h"
 #include "mm.h"
 #include "thread.h"
 #include "timer.h"
@@ -18,8 +18,9 @@ int main(void){
 		movl %eax, out_sum;	\
 		popa			\
 	");
-	put_str("hello world!\n");
-	put_str("This is kernel!\n");
+	console_init();
+	console_put_str("hello world!\n");
+	console_put_str("This is kernel!\n");
 
 	mem_init();
 	//malloc_page(PF_KERNEL, 10);
@@ -56,6 +57,6 @@ static void print_thread(void *arg)
 {
 	int8_t* str = arg;
 	while(1) {
-		put_str(str);
+		console_put_str(str);
 	}
 }

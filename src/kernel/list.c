@@ -110,3 +110,16 @@ list_elem_t* list_pop_tail(list_t *self)
 		self->head = NULL;
 	return ret;
 }
+
+uint32_t list_size(list_t *self)
+{
+	list_elem_t *elem = self->head;
+	uint32_t ret = 0;
+
+	while (NULL != elem) {
+		elem = elem->next;
+		ret++;
+	}
+
+	return ret;
+}

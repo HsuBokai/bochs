@@ -30,5 +30,6 @@ void list_insert_tail(list_t *self, list_elem_t *elem);
 int list_find_elem(list_t *self, list_elem_t *elem);
 list_elem_t* list_pop_head(list_t *self);
 list_elem_t* list_pop_tail(list_t *self);
+uint32_t list_size(list_t *self);
 
 #endif /* __LIB_LIST_H */

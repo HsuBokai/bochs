@@ -6,7 +6,7 @@
 #include "thread.h"
 #include "schedule.h"
 
-#define IDT_DESC_CNT 0x21
+#define IDT_DESC_CNT 0x30
 
 #define PIC_M_CTRL 0x20
 #define PIC_M_DATA 0x21
@@ -110,6 +110,21 @@ static void idt_desc_init(void) {
 	intr_name[0x1f] = "#UK Unknown";
 
 	intr_name[0x20] = "#TI Timer Interrupt";
+	intr_name[0x21] = "Keyboard Interrupt";
+	intr_name[0x22] = "For Serial Connection";
+	intr_name[0x23] = "Serial Port 2";
+	intr_name[0x24] = "Serial Port 1";
+	intr_name[0x25] = "Parallel Port 2";
+	intr_name[0x26] = "Soft Disk";
+	intr_name[0x27] = "Parallel Port 1";
+	intr_name[0x28] = "Instant Clock";
+	intr_name[0x29] = "Redirection";
+	intr_name[0x2a] = "Reserved";
+	intr_name[0x2b] = "Reserved";
+	intr_name[0x2c] = "ps/2 Mouse";
+	intr_name[0x2d] = "Float Point Uint Exception";
+	intr_name[0x2e] = "Hard Disk";
+	intr_name[0x2f] = "Reserved";
 
 	put_str("idt_desc_init done\n");
 }

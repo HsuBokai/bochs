@@ -74,3 +74,18 @@ intr_entry_table:
 	VECTOR 0x1f,.NO_ERROR_CODE,general_intr_handler
 
 	VECTOR 0x20,.NO_ERROR_CODE,timer_intr_handler
+	VECTOR 0x21,.NO_ERROR_CODE,general_intr_handler
+	VECTOR 0x22,.NO_ERROR_CODE,general_intr_handler
+	VECTOR 0x23,.NO_ERROR_CODE,general_intr_handler
+	VECTOR 0x24,.NO_ERROR_CODE,general_intr_handler
+	VECTOR 0x25,.NO_ERROR_CODE,general_intr_handler
+	VECTOR 0x26,.NO_ERROR_CODE,general_intr_handler
+	VECTOR 0x27,.NO_ERROR_CODE,general_intr_handler
+	VECTOR 0x28,.NO_ERROR_CODE,general_intr_handler
+	VECTOR 0x29,.NO_ERROR_CODE,general_intr_handler
+	VECTOR 0x2a,.NO_ERROR_CODE,general_intr_handler
+	VECTOR 0x2b,.NO_ERROR_CODE,general_intr_handler
+	VECTOR 0x2c,.NO_ERROR_CODE,general_intr_handler
+	VECTOR 0x2d,.NO_ERROR_CODE,general_intr_handler
+	VECTOR 0x2e,.NO_ERROR_CODE,general_intr_handler
+	VECTOR 0x2f,.NO_ERROR_CODE,general_intr_handler

@@ -8,6 +8,7 @@
 int in_a=1, in_b=2, out_sum;
 
 static void print_thread(void *arg);
+static void main_thread(void *arg);
 
 static void test_thread(void)
 {
@@ -52,7 +53,12 @@ int main(void){
 
 	//ASSERT(1==2);
 
-	test_thread();
+	//test_thread();
+
+	thread_t *thread_main = (thread_t*) malloc_page(PF_KERNEL, 1);
+	thread_init(thread_main, "thread Main", 1);
+	thread_func_setup(thread_main, main_thread, NULL);
+	thread_start(thread_main);
 
 	while(1);
 	return 0;
@@ -64,4 +70,9 @@ static void print_thread(void *arg)
 	while(1) {
 		console_put_str(str);
 	}
+}
+
+static void main_thread(void *arg)
+{
+	while(1);
 }

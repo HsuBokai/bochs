@@ -74,7 +74,7 @@ intr_entry_table:
 	VECTOR 0x1f,.NO_ERROR_CODE,general_intr_handler
 
 	VECTOR 0x20,.NO_ERROR_CODE,timer_intr_handler
-	VECTOR 0x21,.NO_ERROR_CODE,general_intr_handler
+	VECTOR 0x21,.NO_ERROR_CODE,keyboard_intr_handler
 	VECTOR 0x22,.NO_ERROR_CODE,general_intr_handler
 	VECTOR 0x23,.NO_ERROR_CODE,general_intr_handler
 	VECTOR 0x24,.NO_ERROR_CODE,general_intr_handler

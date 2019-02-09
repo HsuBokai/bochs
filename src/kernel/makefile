@@ -25,6 +25,7 @@ OBJS=$(BUILD_DIR)/main.o \
 	$(BUILD_DIR)/timer.o \
 	$(BUILD_DIR)/semaphore.o \
 	$(BUILD_DIR)/console.o \
+	$(BUILD_DIR)/keyboard.o \
 	$(BUILD_DIR)/debug.o
 HEADER_FILES= $(wildcard ./include/*.h)
 

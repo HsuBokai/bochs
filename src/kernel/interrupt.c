@@ -6,8 +6,6 @@
 #include "thread.h"
 #include "schedule.h"
 
-#define IDT_DESC_CNT 0x30
-
 #define PIC_M_CTRL 0x20
 #define PIC_M_DATA 0x21
 #define PIC_S_CTRL 0xa0
@@ -23,7 +21,7 @@ struct gate_desc {
 
 static void make_idt_desc(struct gate_desc* p_gdesc, uint8_t attr, intr_handler function);
 static struct gate_desc idt[IDT_DESC_CNT];
-static int8_t* intr_name[IDT_DESC_CNT];
+int8_t* intr_name[IDT_DESC_CNT];
 
 extern intr_handler intr_entry_table[IDT_DESC_CNT];
 
@@ -143,7 +141,7 @@ static void pic_init(void)
 	outb(PIC_S_DATA, 0x02);
 	outb(PIC_S_DATA, 0x01);
 
-	outb(PIC_M_DATA, 0xfe);
+	outb(PIC_M_DATA, 0xfc);
 	outb(PIC_S_DATA, 0xff);
 
 	put_str("pic_init done\n");

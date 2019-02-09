@@ -60,7 +60,6 @@ int main(void){
 	thread_func_setup(thread_main, main_thread, NULL);
 	thread_start(thread_main);
 
-	while(1);
 	return 0;
 }
 

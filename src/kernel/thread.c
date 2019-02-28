@@ -8,8 +8,16 @@
 
 static void thread_start_helper(thread_func* function, void* func_arg)
 {
+	thread_t *curr = NULL;
+
 	INTR_ENABLE;
 	function(func_arg);
+
+	curr = running_thread();
+	INTR_DISABLE;
+	curr->status = TASK_BLOCKED;
+	// FIXME: release thread resources
+	schedule();
 }
 
 static void thread_activate_page(thread_t *self)

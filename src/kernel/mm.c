@@ -1,4 +1,5 @@
 #include "mm.h"
+#include "vaddr.h"
 #include "bitmap.h"
 #include "print.h"
 #include "debug.h"
@@ -13,7 +14,7 @@ typedef struct mem_pool {
 } mem_pool_t;
 
 mem_pool_t kernel_pool;
-uint32_t kernel_vaddr_ptr = K_HEAP_START;
+virtual_addr_t kernel_vaddr;
 
 static void mem_pool_init(mem_pool_t *self, const uint32_t phy_mem_offset, const uint32_t phy_mem_size)
 {
@@ -68,11 +69,6 @@ static void page_table_add(uint32_t page_vir_addr, uint32_t page_phy_addr)
 	*pte = (page_phy_addr | PG_US_U | PG_RW_W | PG_P_1);
 }
 
-static int check_vir_addr_available(uint32_t pg_count)
-{
-	return (kernel_vaddr_ptr + PG_SIZE * pg_count > K_HEAP_LIMIT) ? 0 : 1;
-}
-
 void mem_init(void)
 {
 	uint32_t used_mem = 0, all_mem = 0;
@@ -81,6 +77,7 @@ void mem_init(void)
 	used_mem = 0x100000 + PG_SIZE * 2; //1MB + PDE * 1 + PTE * 1
 	all_mem = TOTAL_PHY_MEM_SIZE;
 	mem_pool_init(&kernel_pool, used_mem, all_mem - used_mem);
+	vaddr_init(&kernel_vaddr, K_HEAP_START, K_HEAP_LIMIT);
 
 	put_str("mem_init done\n");
 }
@@ -95,7 +92,7 @@ void* malloc_page(pool_flags_t pf, uint32_t pg_count)
 	if (NULL == mem_pool)
 		goto FAIL;
 
-	if (0 == check_vir_addr_available(pg_count))
+	if (0 == vaddr_available(&kernel_vaddr, pg_count))
 		goto FAIL;
 
 	if (0 != bitmap_scan(&(mem_pool->pool_bitmap), pg_count, &bit_offset))
@@ -108,13 +105,11 @@ void* malloc_page(pool_flags_t pf, uint32_t pg_count)
 	put_str("!\n");
 
 	phy_mem_start = mem_pool->phy_mem_offset + bit_offset * PG_SIZE;
-	vir_mem_start = kernel_vaddr_ptr;
+	vir_mem_start = vaddr_get(&kernel_vaddr, pg_count);
 
 	for(i = 0; i < pg_count; ++i) {
 		bitmap_set(&(mem_pool->pool_bitmap), bit_offset + i, 1);
-		page_table_add(kernel_vaddr_ptr,  phy_mem_start);
-		kernel_vaddr_ptr += PG_SIZE;
-		phy_mem_start += PG_SIZE;
+		page_table_add(vir_mem_start + i*PG_SIZE,  phy_mem_start + i*PG_SIZE);
 	}
 
 	return (void*)vir_mem_start;

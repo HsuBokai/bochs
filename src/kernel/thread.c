@@ -38,7 +38,6 @@ void thread_func_setup(thread_t *self, thread_func *function, void *func_arg)
 {
 	thread_stack_t *th_stack = NULL;
 
-	self->stack_ptr -= sizeof(intr_stack_t);
 	self->stack_ptr -= sizeof(thread_stack_t);
 	th_stack = (thread_stack_t*) self->stack_ptr;
 	th_stack->eip = thread_start_helper;

@@ -52,20 +52,21 @@ static uint32_t* pde_ptr(uint32_t vaddr)
 static void page_table_add(uint32_t page_vir_addr, uint32_t page_phy_addr)
 {
 	uint32_t *pde = NULL, *pte = NULL;
-	uint32_t new_pte = 0;
+	uint32_t new_pte_phy_addr = 0;
 
 	ASSERT(0 == (page_phy_addr & 0x00000fff));
 
 	pde = pde_ptr(page_vir_addr);
+	pte = pte_ptr(page_vir_addr);
+
 	if (0 == (*pde & 0x00000001)) {
-		if (0 != mem_pool_palloc(&kernel_pool, &new_pte)) {
+		if (0 != mem_pool_palloc(&kernel_pool, &new_pte_phy_addr)) {
 			ASSERT(0);
 		}
-		*pde = (new_pte | PG_US_U | PG_RW_W | PG_P_1);
-		memset((uint8_t*)new_pte, 0, PG_SIZE);
+		*pde = (new_pte_phy_addr | PG_US_U | PG_RW_W | PG_P_1);
+		memset((uint8_t*)((uint32_t)pte & 0xfffff000), 0, PG_SIZE);
 	}
 
-	pte = pte_ptr(page_vir_addr);
 	*pte = (page_phy_addr | PG_US_U | PG_RW_W | PG_P_1);
 }
 

@@ -34,18 +34,18 @@ setup_page:
 ; }
 
 	;---------- create kernel other pde ----------
-	mov eax,PAGE_DIR_TABLE_POS
-	add eax,0x2000
-	or eax,PG_US_U | PG_RW_W | PG_P
-	mov ebx,PAGE_DIR_TABLE_POS
+	;mov eax,PAGE_DIR_TABLE_POS
+	;add eax,0x2000
+	;or eax,PG_US_U | PG_RW_W | PG_P
+	;mov ebx,PAGE_DIR_TABLE_POS
 ; for loop {
-	mov ecx,254
-	mov esi,769
-.create_kernel_pde:
-	mov [ebx+esi*4],eax
-	inc esi
-	add eax,0x1000
-	loop .create_kernel_pde
+	;mov ecx,254
+	;mov esi,769
+;.create_kernel_pde:
+	;mov [ebx+esi*4],eax
+	;inc esi
+	;add eax,0x1000
+	;loop .create_kernel_pde
 ; }
 
 	ret

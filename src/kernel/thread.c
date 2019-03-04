@@ -14,7 +14,7 @@ static void thread_start_helper(thread_func* function, void* func_arg)
 
 static void thread_activate_page(thread_t *self)
 {
-	uint32_t page_base_phy_addr = IS_KERNEL_THREAD(self) ? 0x10000 : self->page_base_phy_addr;
+	uint32_t page_base_phy_addr = IS_KERNEL_THREAD(self) ? 0x100000 : self->page_base_phy_addr;
 	asm volatile("movl %0, %%cr3" : : "r" (page_base_phy_addr) : "memory");
 }
 

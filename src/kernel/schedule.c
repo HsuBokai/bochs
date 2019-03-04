@@ -26,5 +26,8 @@ void schedule(void)
 	next_tag = list_pop_head(&thread_ready_list);
 	next = elem2struct(thread_t, general_tag, next_tag);
 	next->status = TASK_RUNNING;
+
+	thread_activate(next);
+
 	switch_to(curr, next);
 }

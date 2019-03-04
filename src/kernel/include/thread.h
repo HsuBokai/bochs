@@ -2,11 +2,14 @@
 #define __THREAD_H
 #include "stdint.h"
 #include "list.h"
+#include "vaddr.h"
 
 typedef void thread_func(void*);
 
 #define GET_STACK_PTR(ESP_VAR) \
 	asm volatile("mov %%esp, %0" : "=g" (ESP_VAR))
+#define IS_KERNEL_THREAD(self) \
+	(0 == self->page_base_phy_addr)
 
 typedef enum thread_status {
 	TASK_RUNNING,
@@ -39,7 +42,9 @@ typedef struct thread {
 	uint32_t elapsed_ticks;
 	list_elem_t general_tag;
 	list_elem_t all_list_tag;
-	uint32_t* pg_base_ptr;
+
+	uint32_t page_base_phy_addr;
+	virtual_addr_t user_proc_vaddr;
 
 	uint32_t stack_magic;
 } thread_t;
@@ -48,6 +53,7 @@ void thread_init(thread_t *self, int8_t *name, uint8_t priority);
 void thread_func_setup(thread_t *self, thread_func *function, void *func_arg);
 void thread_start(thread_t *self);
 void thread_ready(thread_t *self);
+void thread_activate(thread_t *self);
 
 thread_t* running_thread(void);
 

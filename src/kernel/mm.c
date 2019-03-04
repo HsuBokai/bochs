@@ -1,17 +1,11 @@
 #include "mm.h"
 #include "vaddr.h"
-#include "bitmap.h"
 #include "print.h"
 #include "debug.h"
+#include "thread.h"
 
 #define PDE_IDX(addr) ((addr & 0xffc00000) >> 22)
 #define PTE_IDX(addr) ((addr & 0x003ff000) >> 12)
-
-typedef struct mem_pool {
-	bitmap_t pool_bitmap;
-	uint32_t phy_mem_offset;
-	uint8_t bitmap_array[K_BITMAP_BYTES_LEN];
-} mem_pool_t;
 
 mem_pool_t kernel_pool;
 virtual_addr_t kernel_vaddr;
@@ -49,7 +43,7 @@ static uint32_t* pde_ptr(uint32_t vaddr)
 	return (uint32_t*)(0xfffff000 + PDE_IDX(vaddr) * 4);
 }
 
-static void page_table_add(uint32_t page_vir_addr, uint32_t page_phy_addr)
+void page_table_add(uint32_t page_vir_addr, uint32_t page_phy_addr)
 {
 	uint32_t *pde = NULL, *pte = NULL;
 	uint32_t new_pte_phy_addr = 0;
@@ -86,14 +80,17 @@ void mem_init(void)
 void* malloc_page(pool_flags_t pf, uint32_t pg_count)
 {
 	mem_pool_t *mem_pool = NULL;
+	virtual_addr_t *mem_vaddr = NULL;
+	thread_t *curr = running_thread();
 	uint32_t vir_mem_start = 0, phy_mem_start = 0, bit_offset = 0, i = 0;
 
 	mem_pool = (pf & PF_KERNEL) ? &kernel_pool : NULL;
+	mem_vaddr = IS_KERNEL_THREAD(curr) ? &kernel_vaddr : &(curr->user_proc_vaddr);
 
 	if (NULL == mem_pool)
 		goto FAIL;
 
-	if (0 == vaddr_available(&kernel_vaddr, pg_count))
+	if (0 == vaddr_available(mem_vaddr, pg_count))
 		goto FAIL;
 
 	if (0 != bitmap_scan(&(mem_pool->pool_bitmap), pg_count, &bit_offset))
@@ -106,7 +103,7 @@ void* malloc_page(pool_flags_t pf, uint32_t pg_count)
 	put_str("!\n");
 
 	phy_mem_start = mem_pool->phy_mem_offset + bit_offset * PG_SIZE;
-	vir_mem_start = vaddr_get(&kernel_vaddr, pg_count);
+	vir_mem_start = vaddr_get(mem_vaddr, pg_count);
 
 	for(i = 0; i < pg_count; ++i) {
 		bitmap_set(&(mem_pool->pool_bitmap), bit_offset + i, 1);
@@ -117,4 +114,10 @@ void* malloc_page(pool_flags_t pf, uint32_t pg_count)
 
 FAIL:
 	return NULL;
+}
+
+uint32_t addr_v2p(uint32_t vaddr)
+{
+	uint32_t *pte = pte_ptr(vaddr);
+	return (*pte & 0xfffff000) + (vaddr & 0x00000fff);
 }

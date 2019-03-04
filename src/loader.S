@@ -6,10 +6,10 @@ SECTION loader vstart=LOADER_BASE_ADDR
 	;---------- gdt data structure ----------
 	GDT_BASE:	dd	0x00000000
 			dd	0x00000000
-	CODE_DESC:	dd	0x0000FFFF
+	K_CODE_DESC:	dd	0x0000FFFF
 			dd	(0x00 << 24) + \
 				DESC_G_4K + \
-				DESC_D_32 + \
+				DESC_D_B_32 + \
 				DESC_L + \
 				DESC_AVL + \
 				(0xF << 16) + \
@@ -18,10 +18,10 @@ SECTION loader vstart=LOADER_BASE_ADDR
 				DESC_S_NONSYS + \
 				DESC_TYPE_CODE + \
 				0x00
-	DATA_STACK_DESC:	dd	0x0000FFFF
+	K_DATA_STACK_DESC:	dd	0x0000FFFF
 				dd	(0x00 << 24) + \
 					DESC_G_4K + \
-					DESC_D_32 + \
+					DESC_D_B_32 + \
 					DESC_L + \
 					DESC_AVL + \
 					(0xF << 16) + \
@@ -34,7 +34,7 @@ SECTION loader vstart=LOADER_BASE_ADDR
 			dw	VIDEO_DESC_BASE_LOW
 			dd	(0x00 << 24) + \
 				DESC_G_4K + \
-				DESC_D_32 + \
+				DESC_D_B_32 + \
 				DESC_L + \
 				DESC_AVL + \
 				(VIDEO_DESC_BASE_HIGH_H << 16) + \
@@ -43,6 +43,43 @@ SECTION loader vstart=LOADER_BASE_ADDR
 				DESC_S_NONSYS + \
 				DESC_TYPE_DATA + \
 				VIDEO_DESC_BASE_HIGH_L
+	TSS_DESC:	dd	0x00000000
+			dd	(0x00 << 24) + \
+				DESC_G_4K + \
+				DESC_D_B_16 + \
+				DESC_L + \
+				DESC_AVL + \
+				(0x0 << 16) + \
+				DESC_P + \
+				DESC_DPL_0 + \
+				DESC_S_SYS + \
+				DESC_TYPE_TSS + \
+				0x00
+	U_CODE_DESC:	dd	0x0000FFFF
+			dd	(0x00 << 24) + \
+				DESC_G_4K + \
+				DESC_D_B_32 + \
+				DESC_L + \
+				DESC_AVL + \
+				(0xF << 16) + \
+				DESC_P + \
+				DESC_DPL_3 + \
+				DESC_S_NONSYS + \
+				DESC_TYPE_CODE + \
+				0x00
+	U_DATA_STACK_DESC:	dd	0x0000FFFF
+				dd	(0x00 << 24) + \
+					DESC_G_4K + \
+					DESC_D_B_32 + \
+					DESC_L + \
+					DESC_AVL + \
+					(0xF << 16) + \
+					DESC_P + \
+					DESC_DPL_0 + \
+					DESC_S_NONSYS + \
+					DESC_TYPE_DATA + \
+					0x00
+
 
 	GDT_SIZE	equ	$-GDT_BASE
 	GDT_LIMIT	equ	GDT_SIZE-1

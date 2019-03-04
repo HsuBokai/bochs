@@ -156,5 +156,5 @@ void idt_init(void) {
 uint32_t is_interrupt_enabled(void) {
 	uint32_t ret = 0;
 	GET_EFLAGS(ret);
-	return (EFLAGS_IF & ret);
+	return (EFLAGS_IF_1 & ret);
 }

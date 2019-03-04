@@ -5,7 +5,6 @@
 typedef void* intr_handler;
 
 #define IDT_DESC_CNT 0x30
-#define EFLAGS_IF 0x00000200
 #define GET_EFLAGS(EFLAGS_VAR) \
 	asm volatile("pushfl; popl %0" : "=g" (EFLAGS_VAR))
 #define INTR_DISABLE \

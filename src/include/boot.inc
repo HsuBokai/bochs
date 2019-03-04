@@ -16,7 +16,8 @@ PT_NULL			equ 0
 
 ;---------- gdt attributes ----------
 DESC_G_4K	equ (1b << 23)
-DESC_D_32	equ (1b << 22)
+DESC_D_B_32	equ (1b << 22)
+DESC_D_B_16	equ (0b << 22)
 DESC_L		equ (0b << 21)
 DESC_AVL	equ (0b << 20)
 DESC_P		equ (1b << 15)
@@ -32,6 +33,9 @@ DESC_TYPE_CODE	equ (1000b << 8)
 
 ; x=0, e=0, w=1, a=0
 DESC_TYPE_DATA	equ (0010b << 8)
+
+; available 80386 TSS
+DESC_TYPE_TSS	equ (1001b << 8)
 
 ;---------- selector attributes ----------
 RPL0	equ 00b

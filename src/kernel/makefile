@@ -27,6 +27,8 @@ OBJS=$(BUILD_DIR)/main.o \
 	$(BUILD_DIR)/console.o \
 	$(BUILD_DIR)/keyboard.o \
 	$(BUILD_DIR)/vaddr.o \
+	$(BUILD_DIR)/tss.o \
+	$(BUILD_DIR)/process.o \
 	$(BUILD_DIR)/debug.o
 HEADER_FILES= $(wildcard ./include/*.h)
 

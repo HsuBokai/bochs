@@ -75,7 +75,7 @@ SECTION loader vstart=LOADER_BASE_ADDR
 					DESC_AVL + \
 					(0xF << 16) + \
 					DESC_P + \
-					DESC_DPL_0 + \
+					DESC_DPL_3 + \
 					DESC_S_NONSYS + \
 					DESC_TYPE_DATA + \
 					0x00

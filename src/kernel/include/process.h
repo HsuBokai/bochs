@@ -17,13 +17,13 @@ typedef struct intr_stack {
 	uint32_t eax;
 
 	/* push gs; in intr.S */
-	uint32_t gs;
+	uint16_t gs;
 	/* push fs; in intr.S */
-	uint32_t fs;
+	uint16_t fs;
 	/* push es; in intr.S */
-	uint32_t es;
+	uint16_t es;
 	/* push ds; in intr.S */
-	uint32_t ds;
+	uint16_t ds;
 
 	/* Timer Interrupt (vec_no: 0x20) with NO_ERROR_CODE */
 	//uint32_t err_code;

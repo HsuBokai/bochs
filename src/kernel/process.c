@@ -66,14 +66,15 @@ static void start_process(void* function) {
 	intr_stack.eflags = (EFLAGS_IOPL_0 | EFLAGS_MBS | EFLAGS_IF_1);
 	intr_stack.esp = (void*)(proc_stack + PG_SIZE);
 	intr_stack.ss = SELECTOR_U_DATA;
+
 	asm volatile (" \
 		movl %0, %%esp;		\
-		addl %%esp, 4;		\
+		addl $4, %%esp;		\
 		popal;		\
-		pop %%gs;		\
-		pop %%fs;		\
-		pop %%es;		\
-		pop %%ds;		\
+		popw %%gs;		\
+		popw %%fs;		\
+		popw %%es;		\
+		popw %%ds;		\
 		iretl;		\
 		": : "g"(&intr_stack) : "memory");
 }

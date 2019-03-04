@@ -13,7 +13,7 @@ void update_tss_esp(thread_t *self)
 
 void tss_init(void) {
 	uint32_t tss_size = 0, tss_base = (uint32_t)&tss;
-	uint8_t *tss_descriptor_base = (uint8_t*)(0xc0000900 + 4 * 8);
+	uint8_t *tss_descriptor_base = (uint8_t*)(0xc0000903 + 4 * 8);
 
 	console_put_str("tss_init start\n");
 	tss_size = sizeof(tss);
@@ -30,7 +30,7 @@ void tss_init(void) {
 	tss_descriptor_base[6] |= (uint8_t)(((tss_size - 1) & 0x000f0000) >> 16);
 	tss_descriptor_base[7] = (uint8_t)((tss_base & 0xff0000000) >> 24);
 
-	uint64_t gdt_operand = ((8*7 - 1) | ((uint64_t)(uint32_t)0xc0000900 << 16));
+	uint64_t gdt_operand = ((8*7 - 1) | ((uint64_t)(uint32_t)0xc0000903 << 16));
 
 	asm volatile("lgdt %0" : : "m" (gdt_operand));
 	asm volatile("ltr %w0" : : "r" (SELECTOR_TSS));

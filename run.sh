@@ -27,9 +27,9 @@ if [ $kernel_size -gt 51200 ]; then
 	exit 1
 fi
 
-readelf -e /tmp/kernel.bin
+#readelf -e /tmp/kernel.bin
 
-objdump -t /tmp/kernel.bin
+#objdump -t /tmp/kernel.bin
 
 dd if=/tmp/kernel.bin of=hd60M.img bs=512 seek=9 conv=notrunc
 [ $? -ne 0 ] && echo "compile kernel.bin fail!" && exit 1

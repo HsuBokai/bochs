@@ -3,6 +3,7 @@
 #include "stdint.h"
 #include "list.h"
 #include "vaddr.h"
+#include "thread_pid.h"
 
 typedef void thread_func(void*);
 
@@ -34,6 +35,7 @@ typedef struct thread_stack {
 
 typedef struct thread {
 	uint32_t* stack_ptr;
+	pid_t pid;
 	thread_status_t status;
 	uint8_t priority;
 	int8_t name[19];

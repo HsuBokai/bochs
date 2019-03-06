@@ -6,6 +6,7 @@
 #include "timer.h"
 #include "tss.h"
 #include "process.h"
+#include "thread_pid.h"
 
 int in_a=1, in_b=2, out_sum;
 uint8_t test_var_a = 0, test_var_b = 0;
@@ -110,6 +111,8 @@ int main(void){
 	timer_init();
 
 	tss_init();
+
+	thread_pid_init();
 
 	//ASSERT(1==2);
 

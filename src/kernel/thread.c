@@ -25,6 +25,7 @@ void thread_init(thread_t *self, int8_t *name, uint8_t priority)
 	ASSERT(NULL != name);
 
 	self->stack_ptr = (uint32_t*) thread_stack_start;
+	self->pid = allocate_pid();
 	self->status = TASK_READY;
 	self->priority = priority;
 

@@ -15,7 +15,3 @@ void keyboard_intr_handler(uint8_t vec_nr)
 	uint8_t scancode = inb(KBD_BUF_PORT);
 	put_int(scancode);
 }
-
-//void keyboard_bottom_half(void *arg)
-//{
-//}

@@ -30,6 +30,7 @@ OBJS=$(BUILD_DIR)/main.o \
 	$(BUILD_DIR)/tss.o \
 	$(BUILD_DIR)/process.o \
 	$(BUILD_DIR)/thread_pid.o \
+	$(BUILD_DIR)/syscall_init.o \
 	$(BUILD_DIR)/debug.o
 HEADER_FILES= $(wildcard ./include/*.h)
 

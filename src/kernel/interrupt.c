@@ -68,9 +68,13 @@ static void make_idt_desc(struct gate_desc* p_gdesc, uint8_t attr, intr_handler 
 
 static void idt_desc_init(void) {
 	int i;
+	uint8_t attr;
+
 	for (i=0; i<IDT_DESC_CNT; i++) {
-		make_idt_desc(&idt[i], IDT_DESC_ATTR_DPL0, intr_entry_table[i]);
+		attr = (i == 0x80) ? IDT_DESC_ATTR_DPL3 : IDT_DESC_ATTR_DPL0;
+		make_idt_desc(&idt[i], attr, intr_entry_table[i]);
 	}
+
 	intr_name[0x00] = "#DE Divide Error";
 	intr_name[0x01] = "#DB Debug Exception";
 	intr_name[0x02] = "#NMI Interrupt";

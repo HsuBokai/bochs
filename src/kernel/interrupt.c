@@ -27,6 +27,8 @@ extern intr_handler intr_entry_table[IDT_DESC_CNT];
 
 void general_intr_handler(uint8_t vec_nr)
 {
+	asm volatile ("pushw %0;  popw %%gs;": : "g"(SELECTOR_K_VIDEO) : "memory");
+
 	put_str("interrupt!! vec_nr:");
 	put_int(vec_nr);
 	put_str("!! intr_name:");

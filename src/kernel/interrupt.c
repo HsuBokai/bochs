@@ -125,6 +125,9 @@ static void idt_desc_init(void) {
 
 static void pic_init(void)
 {
+	uint8_t pic_master_mask = 0xff;
+	uint8_t pic_slave_mask = 0xff;
+
 	outb(PIC_M_CTRL, 0x11);
 	outb(PIC_M_DATA, 0x20);
 
@@ -137,8 +140,11 @@ static void pic_init(void)
 	outb(PIC_S_DATA, 0x02);
 	outb(PIC_S_DATA, 0x01);
 
-	outb(PIC_M_DATA, 0xfc);
-	outb(PIC_S_DATA, 0xff);
+	pic_master_mask &= ~(1 << PIC_M_IRQ_TIMER);
+	pic_master_mask &= ~(1 << PIC_M_IRQ_KEYBOARD);
+
+	outb(PIC_M_DATA, pic_master_mask);
+	outb(PIC_S_DATA, pic_slave_mask);
 
 	put_str("pic_init done\n");
 }

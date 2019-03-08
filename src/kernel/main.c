@@ -51,6 +51,33 @@ static void test_user_prog(void)
 	user_prog_ready(u_prog_b, "user B");
 }
 
+static void test_user_protection(void)
+{
+	asm volatile ("movw $1, %ds:0xc0010000;"); // PASS
+	asm volatile ("movw $1, %gs:0xc0010000;"); // General Protection Exception
+
+	asm volatile("pushw $0x0033; popw %gs;"); // PASS
+	asm volatile("pushw $0x0010; popw %gs;"); // General Protection Exception
+
+	// PASS, But code path flow change causing other unexpected exception
+	asm volatile ("				\
+		movl $0x002b, %%eax;		\
+		pushl %%eax;			\
+		movl $0xc0001000, %%eax;	\
+		pushl %%eax;			\
+		iretl;				\
+	" : : : "memory");
+
+	// General Protection Exception
+	asm volatile ("				\
+		movl $0x0008, %%eax;		\
+		pushl %%eax;			\
+		movl $0xc0001000, %%eax;	\
+		pushl %%eax;			\
+		iretl;				\
+	" : : : "memory");
+}
+
 int main(void){
 	asm(" \
 		pusha;			\
@@ -122,6 +149,7 @@ static void k_thread_b(void *arg)
 
 static void u_prog_a(void)
 {
+	//test_user_protection();
 	while(1) {
 		test_var_a++;
 	}

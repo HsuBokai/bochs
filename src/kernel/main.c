@@ -8,9 +8,11 @@
 #include "process.h"
 #include "thread_pid.h"
 #include "syscall_init.h"
+#include "syscall.h"
 
 int in_a=1, in_b=2, out_sum;
 uint8_t test_var_a = 0, test_var_b = 0;
+pid_t prog_a_pid = 0, prog_b_pid = 0;
 
 static void print_thread(void *arg);
 static void idle_thread(void *arg);
@@ -145,24 +147,23 @@ static void idle_thread(void *arg)
 
 static void k_thread_a(void *arg)
 {
-	while(1) {
-		console_put_str("v_a:");
-		console_put_int(test_var_a);
-		console_put_str("\n");
-	}
+	console_put_str("prog_a_pid:");
+	console_put_int(prog_a_pid);
+	console_put_str("\n");
+	while(1);
 }
 
 static void k_thread_b(void *arg)
 {
-	while(1) {
-		console_put_str("v_b:");
-		console_put_int(test_var_b);
-		console_put_str("\n");
-	}
+	console_put_str("prog_b_pid:");
+	console_put_int(prog_b_pid);
+	console_put_str("\n");
+	while(1);
 }
 
 static void u_prog_a(void)
 {
+	prog_a_pid = getpid();
 	//test_user_protection();
 	while(1) {
 		//test_malloc();
@@ -172,6 +173,7 @@ static void u_prog_a(void)
 
 static void u_prog_b(void)
 {
+	prog_b_pid = getpid();
 	while(1) {
 		test_var_b++;
 	}

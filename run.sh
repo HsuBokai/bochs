@@ -13,6 +13,7 @@ nasm -I ./src/include/ -o /tmp/loader.bin ./src/loader.S
 dd if=/tmp/loader.bin of=hd60M.img  bs=512 seek=2 conv=notrunc
 [ $? -ne 0 ] && echo "nasm loader.S fail!" && exit 1
 
+sh -c 'cd src/kernel/user && make;'
 sh -c 'cd src/kernel && make;'
 
 #elf_header_size=`readelf -e /tmp/kernel.bin | grep "Size of this header" | cut -d ":" -f2 | cut -d "(" -f1`

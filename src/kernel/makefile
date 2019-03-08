@@ -3,7 +3,7 @@ BUILD_DIR=/tmp
 ENTRY_POINT=0xc0010000
 
 CC=$(TOOLCHAIN)gcc
-CFLAGS= -m32 -Wall -c -W -I./include -fno-builtin -Wstrict-prototypes -Wmissing-prototypes -Werror -Wno-unused-parameter -Wno-unused-function
+CFLAGS= -m32 -Wall -c -W -I./include -I./user/uapi -fno-builtin -Wstrict-prototypes -Wmissing-prototypes -Werror -Wno-unused-parameter -Wno-unused-function
 
 AS=$(TOOLCHAIN)nasm
 ASFLAGS= -f elf
@@ -43,7 +43,7 @@ $(BUILD_DIR)/%.o: %.S
 	$(AS) $(ASFLAGS) $< -o $@
 
 $(BUILD_DIR)/kernel.bin: $(OBJS)
-	$(LD) $(LDFLAGS) $^ -o $@
+	$(LD) $(LDFLAGS) $^ -o $@ $(BUILD_DIR)/syscall.o
 
 all: $(BUILD_DIR)/kernel.bin
 

@@ -32,12 +32,12 @@ SECTION loader vstart=LOADER_BASE_ADDR
 					0x00
 	VIDEO_DESC:	dw	0x0007 ; limit=(0xbffff-0xb8000)/4k=0x7
 			dw	VIDEO_DESC_BASE_LOW
-			dd	(0x00 << 24) + \
+			dd	(VIDEO_DESC_BASE_HIGH_H << 24) + \
 				DESC_G_4K + \
 				DESC_D_B_32 + \
 				DESC_L + \
 				DESC_AVL + \
-				(VIDEO_DESC_BASE_HIGH_H << 16) + \
+				(0x0 << 16) + \
 				DESC_P + \
 				DESC_DPL_0 + \
 				DESC_S_NONSYS + \

@@ -78,6 +78,14 @@ static void test_user_protection(void)
 	" : : : "memory");
 }
 
+static void test_malloc(void)
+{
+	void* p = malloc_page(PF_KERNEL, 0x100);
+	if (NULL == p) {
+		ASSERT(0);
+	}
+}
+
 int main(void){
 	asm(" \
 		pusha;			\
@@ -151,6 +159,7 @@ static void u_prog_a(void)
 {
 	//test_user_protection();
 	while(1) {
+		//test_malloc();
 		test_var_a++;
 	}
 }

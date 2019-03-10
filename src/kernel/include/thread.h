@@ -59,4 +59,6 @@ void thread_activate(thread_t *self);
 
 thread_t* running_thread(void);
 
+void become_idle_thread(void);
+
 #endif /* __THREAD_H */

@@ -5,6 +5,8 @@
 #include "switch.h"
 #include "interrupt.h"
 
+extern thread_t *idle_thread;
+
 list_t thread_ready_list;
 list_t thread_all_list;
 
@@ -23,8 +25,12 @@ void schedule(void)
 		curr->ticks = curr->priority;
 	}
 
-	next_tag = list_pop_head(&thread_ready_list);
-	next = elem2struct(thread_t, general_tag, next_tag);
+	if (0 == list_size(&thread_ready_list)) {
+		next = idle_thread;
+	} else {
+		next_tag = list_pop_head(&thread_ready_list);
+		next = elem2struct(thread_t, general_tag, next_tag);
+	}
 	next->status = TASK_RUNNING;
 
 	thread_activate(next);

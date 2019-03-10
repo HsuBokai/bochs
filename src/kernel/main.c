@@ -15,7 +15,6 @@ uint8_t test_var_a = 0, test_var_b = 0;
 pid_t prog_a_pid = 0, prog_b_pid = 0;
 
 static void print_thread(void *arg);
-static void idle_thread(void *arg);
 static void k_thread_a(void *arg);
 static void k_thread_b(void *arg);
 static void u_prog_a(void);
@@ -124,10 +123,7 @@ int main(void){
 	//test_thread();
 	test_user_prog();
 
-	thread_t *thread_main = (thread_t*) malloc_page(PF_KERNEL, 1);
-	thread_init(thread_main, "thread Main", 1);
-	thread_func_setup(thread_main, idle_thread, NULL);
-	thread_start(thread_main);
+	become_idle_thread();
 
 	return 0;
 }
@@ -140,10 +136,6 @@ static void print_thread(void *arg)
 	}
 }
 
-static void idle_thread(void *arg)
-{
-	while(1);
-}
 
 static void k_thread_a(void *arg)
 {

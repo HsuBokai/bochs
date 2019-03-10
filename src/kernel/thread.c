@@ -6,6 +6,8 @@
 #include "interrupt.h"
 #include "tss.h"
 
+thread_t *idle_thread;
+
 static void thread_start_helper(thread_func* function, void* func_arg)
 {
 	INTR_ENABLE;
@@ -88,4 +90,26 @@ thread_t* running_thread(void)
 	uint32_t esp;
 	GET_STACK_PTR(esp);
 	return (thread_t*)(esp & 0xfffff000);
+}
+
+static void idle(void *arg)
+{
+	thread_t *curr = running_thread();
+
+	while(1) {
+		/* thread_block(); */
+		curr->status = TASK_BLOCKED;
+		INTR_DISABLE;
+		schedule();
+
+		asm volatile("sti; hlt;" : : : "memory");
+	}
+}
+
+void become_idle_thread(void)
+{
+	idle_thread = (thread_t*) malloc_page(PF_KERNEL, 1);
+	thread_init(idle_thread, "idle thread", 1);
+	thread_func_setup(idle_thread, idle, NULL);
+	thread_start(idle_thread);
 }

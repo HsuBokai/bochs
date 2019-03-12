@@ -4,6 +4,7 @@
 #include "debug.h"
 #include "interrupt.h"
 #include "schedule.h"
+#include "syscall.h"
 
 void sema_init(semaphore_t *self)
 {
@@ -38,21 +39,12 @@ void sema_up(semaphore_t *self)
 
 void sema_down(semaphore_t *self)
 {
-	thread_t *curr = NULL;
-	int org_interrupt_enabled = is_interrupt_enabled();
-
-	if (org_interrupt_enabled) INTR_DISABLE;
+	thread_t *curr = running_thread();
 
 	while (0 == self->resource) {
-		curr = running_thread();
 		list_insert_tail(&(self->waiting_list), &(curr->general_tag));
-
-		/* thread_block(); */
-		curr->status = TASK_BLOCKED;
-		schedule();
+		thread_block();
 	}
 
 	self->resource--;
-
-	if (org_interrupt_enabled) INTR_ENABLE;
 }

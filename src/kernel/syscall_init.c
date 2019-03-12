@@ -13,5 +13,6 @@ void syscall_init(void) {
 	console_put_str("syscall_init start\n");
 	syscall_table[SYS_GETPID] = sys_getpid;
 	syscall_table[SYS_THREAD_YIELD] = sys_thread_yield;
+	syscall_table[SYS_THREAD_BLOCK] = sys_thread_block;
 	console_put_str("syscall_init done\n");
 }

@@ -4,7 +4,8 @@
 
 typedef enum syscall_nr {
 	SYS_GETPID,
-	SYS_THREAD_YIELD
+	SYS_THREAD_YIELD,
+	SYS_THREAD_BLOCK
 } syscall_nr_t;
 
 #define _syscall0(NUMBER) ({	\
@@ -20,5 +21,6 @@ typedef enum syscall_nr {
 
 uint32_t getpid(void);
 uint32_t thread_yield(void);
+uint32_t thread_block(void);
 
 #endif /* __SYSCALL_H */

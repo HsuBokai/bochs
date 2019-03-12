@@ -125,3 +125,13 @@ uint32_t sys_thread_yield(void)
 
 	return (uint32_t)SYS_THREAD_YIELD;
 }
+
+uint32_t sys_thread_block(void)
+{
+	thread_t *curr = running_thread();
+
+	curr->status = TASK_BLOCKED;
+	schedule();
+
+	return (uint32_t)SYS_THREAD_BLOCK;
+}

@@ -139,6 +139,7 @@ static void print_thread(void *arg)
 
 static void k_thread_a(void *arg)
 {
+	msleep(2000);
 	console_put_str("prog_a_pid:");
 	console_put_int(prog_a_pid);
 	console_put_str("\n");
@@ -147,6 +148,7 @@ static void k_thread_a(void *arg)
 
 static void k_thread_b(void *arg)
 {
+	msleep(2000);
 	console_put_str("prog_b_pid:");
 	console_put_int(prog_b_pid);
 	console_put_str("\n");

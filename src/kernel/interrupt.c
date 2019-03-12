@@ -24,6 +24,7 @@ static struct gate_desc idt[IDT_DESC_CNT];
 int8_t* intr_name[IDT_DESC_CNT];
 
 extern intr_handler intr_entry_table[IDT_DESC_CNT];
+extern uint32_t kernel_ticks;
 
 void general_intr_handler(uint8_t vec_nr)
 {
@@ -50,6 +51,7 @@ void timer_intr_handler(uint8_t vec_nr)
 	ASSERT(0x12345678 == curr->stack_magic);
 
 	curr->elapsed_ticks++;
+	kernel_ticks++;
 
 	if (0 == curr->ticks) {
 		schedule();

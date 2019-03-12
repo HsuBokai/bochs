@@ -95,14 +95,8 @@ thread_t* running_thread(void)
 
 static void idle(void *arg)
 {
-	thread_t *curr = running_thread();
-
 	while(1) {
-		/* thread_block(); */
-		curr->status = TASK_BLOCKED;
-		INTR_DISABLE;
-		schedule();
-
+		thread_block();
 		asm volatile("sti; hlt;" : : : "memory");
 	}
 }

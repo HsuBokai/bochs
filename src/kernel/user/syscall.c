@@ -4,3 +4,8 @@ uint32_t getpid(void)
 {
 	return _syscall0(SYS_GETPID);
 }
+
+uint32_t thread_yield(void)
+{
+	return _syscall0(SYS_THREAD_YIELD);
+}

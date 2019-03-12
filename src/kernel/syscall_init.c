@@ -12,5 +12,6 @@ uint32_t sys_getpid(void) {
 void syscall_init(void) {
 	console_put_str("syscall_init start\n");
 	syscall_table[SYS_GETPID] = sys_getpid;
+	syscall_table[SYS_THREAD_YIELD] = sys_thread_yield;
 	console_put_str("syscall_init done\n");
 }

@@ -5,6 +5,7 @@
 #include "schedule.h"
 #include "interrupt.h"
 #include "tss.h"
+#include "syscall.h"
 
 thread_t *idle_thread;
 
@@ -112,4 +113,15 @@ void become_idle_thread(void)
 	thread_init(idle_thread, "idle thread", 1);
 	thread_func_setup(idle_thread, idle, NULL);
 	thread_start(idle_thread);
+}
+
+uint32_t sys_thread_yield(void)
+{
+	thread_t *curr = running_thread();
+
+	list_insert_tail(&thread_ready_list, &(curr->general_tag));
+	curr->status = TASK_READY;
+	schedule();
+
+	return (uint32_t)SYS_THREAD_YIELD;
 }

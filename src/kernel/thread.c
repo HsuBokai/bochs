@@ -104,6 +104,8 @@ static void idle(void *arg)
 void become_idle_thread(void)
 {
 	idle_thread = (thread_t*) malloc_page(PF_KERNEL, 1);
+	ASSERT(NULL != idle_thread);
+
 	thread_init(idle_thread, "idle thread", 1);
 	thread_func_setup(idle_thread, idle, NULL);
 	thread_start(idle_thread);

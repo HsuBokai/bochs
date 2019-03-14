@@ -92,6 +92,8 @@ void user_prog_ready(void *function, int8_t *name)
 	ASSERT(IS_KERNEL_THREAD(curr));
 
 	thread_t *thread = (thread_t*) malloc_page(PF_KERNEL, 1);
+	ASSERT(NULL != thread);
+
 	thread_init(thread, name, priority);
 	thread_func_setup(thread, start_process, function);
 	thread->page_base_phy_addr = create_page_dir();

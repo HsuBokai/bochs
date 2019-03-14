@@ -3,6 +3,7 @@
 #include "print.h"
 #include "debug.h"
 #include "thread.h"
+#include "console.h"
 
 #define PDE_IDX(addr) ((addr & 0xffc00000) >> 22)
 #define PTE_IDX(addr) ((addr & 0x003ff000) >> 12)
@@ -23,6 +24,10 @@ static int mem_pool_palloc(mem_pool_t *self, uint32_t *phy_mem_start)
 	uint32_t bit_offset = 0;
 	if ( 0 != bitmap_scan(&(self->pool_bitmap), 1, &bit_offset))
 		goto FAIL;
+
+	console_put_str("PDE 1 page from bit_offset: ");
+	console_put_int((uint8_t)bit_offset);
+	console_put_str("!\n");
 
 	*phy_mem_start = self->phy_mem_offset + bit_offset * PG_SIZE;
 
@@ -95,6 +100,12 @@ void* malloc_page(pool_flags_t pf, uint32_t pg_count)
 
 	if (0 != bitmap_scan(&(mem_pool->pool_bitmap), pg_count, &bit_offset))
 		goto FAIL;
+
+	console_put_str("malloc ");
+	console_put_int((uint8_t)pg_count);
+	console_put_str(" pages from bit_offset: ");
+	console_put_int((uint8_t)bit_offset);
+	console_put_str("!\n");
 
 	phy_mem_start = mem_pool->phy_mem_offset + bit_offset * PG_SIZE;
 	vir_mem_start = vaddr_get(mem_vaddr, pg_count);

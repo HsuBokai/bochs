@@ -4,6 +4,7 @@
 #include "mm.h"
 #include "bitmap.h"
 #include "thread.h"
+#include "console.h"
 
 extern mem_pool_t kernel_pool;
 
@@ -17,6 +18,10 @@ static uint32_t malloc_proc_stack(void)
 
 	if (0 != bitmap_scan(&(mem_pool->pool_bitmap), 1, &bit_offset))
 		goto FAIL;
+
+	console_put_str("1 page from bit_offset: ");
+	console_put_int((uint8_t)bit_offset);
+	console_put_str("!\n");
 
 	phy_mem_start = mem_pool->phy_mem_offset + bit_offset * PG_SIZE;
 	vir_mem_start = (U_HEAP_LIMIT + 1);
